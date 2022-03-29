@@ -7,54 +7,39 @@ from art import logo
 print(logo)
 print("Welcome to the Silent Auction")
 
-next_user = 1
-user_bids = {}
+users = {}
+next_user_trigger = 1
+current_highest_bid = 0
 
-def bidding(name_of_user, user_bid, other_user):
-    current_input = {}
-    current_input["name_of_user"] = name_of_user
-    current_input["user_bid"] = user_bid
-    current_input["other_user"] = other_user
-    user_bids[name] = current_input
+def bidding_process(user_name, bid_amount, next_user_value):
+    current_value = {}
+    current_value["name"] = user_name
+    current_value["bid"] = bid_amount
+    current_value["next_user"] = next_user_value
+    users[name] = current_value
 
-
-while next_user == 1:
+while  next_user_trigger == 1:
     name = input("What is your name?\n")
-    bid = float(input("What is your bid?\n"))
-    other = input("Is anyone else bidding after you?\n").lower()
-    bidding(name, bid, other)
+    bid = int(input("How much are you bidding?\n"))
+    next_user = input("Is anyone bidding after you?\n").lower()
+    bidding_process(name, bid, next_user)
     clear()
-    if other == "no":
-        next_user -= 1
+    if bid > current_highest_bid:
+        current_highest_bid = bid
+    if next_user == "no":
+        next_user_trigger -= 1
+    elif next_user == "yes":
+        next_user_trigger = 1
+    else:
+        clear()
+        while next_user != "yes" and next_user != "no":
+            next_user = input("Is anyone bidding after you? Please type 'yes' or 'no' without any puctuation.\n").lower()
+            if next_user == "no":
+                next_user_trigger -= 1
+            elif next_user == "yes":
+                next_user_trigger = 1
 
-current_score = 0
-
-for item in user_bids:
-    compare = user_bids[item]["user_bid"]
-    if compare > current_score:
-        current_score += compare
-
-for item in user_bids:
-    compare_two = user_bids[item]["user_bid"]
-    if compare_two == current_score:
-        print(f"The winner of the auction is {user_bids[item]['name_of_user']} with a bid of {user_bids[item]['user_bid']}. Congratulations!")
-
-
-
-
-# test = {
-#     "Nathan": ["Nathan", 20, "yes"],
-#     "Alison": ["Alison", 4, "yes"],
-#     "Nolan": ["Nolan", 6, "no"]
-# }
-
-# for item in test:
-#     test_item = test[item][1]
-#     print(test_item)
-
-# Nathan: {
-#     'name_of_user': 'Nathan', 
-#     'user_bid': 20.0,
-#     'other_user': 'yes',
-# }
-
+for item in users:
+    if current_highest_bid == users[item]["bid"]:
+        winner = users[item]["name"]
+        print(f"The winner is {winner} with a bid of {current_highest_bid}. Congratulations!")

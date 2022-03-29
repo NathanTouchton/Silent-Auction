@@ -1,3 +1,3 @@
 # Silent-Auction
 
-Will NOT work on Windows. Linux only. 
+Will NOT work on Windows or MacOS. Linux only. 
